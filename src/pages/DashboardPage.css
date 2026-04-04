@@ -1,0 +1,71 @@
+/* ========================
+   ESTILOS DEL DASHBOARD
+   ======================== */
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: var(--color-bg-light);
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.dashboard-header {
+  max-width: 1400px;
+  margin: 0 auto var(--spacing-xl);
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-dark);
+}
+
+.dashboard-subtitle {
+  color: var(--color-text-light);
+  font-size: var(--font-size-base);
+}
+
+.dashboard-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: var(--spacing-lg);
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: calc(60px + var(--spacing-lg));
+  height: fit-content;
+}
+
+.dashboard-main {
+  min-height: 600px;
+}
+
+/* ========================
+   RESPONSIVE
+   ======================== */
+
+@media (max-width: 1024px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .dashboard-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .dashboard-header h1 {
+    font-size: var(--font-size-xl);
+  }
+}
