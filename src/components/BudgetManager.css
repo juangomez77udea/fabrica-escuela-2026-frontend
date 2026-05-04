@@ -1,0 +1,432 @@
+/* ========================
+   ESTILOS DE GESTOR DE PRESUPUESTOS (HU-13)
+   ======================== */
+
+.budget-container {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.budget-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.budget-header h2 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-dark);
+}
+
+.subtitle {
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========================
+   FORMULARIO DE PRESUPUESTO
+   ======================== */
+
+.budget-form-container {
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+}
+
+.budget-form-container h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-dark);
+}
+
+.budget-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--color-text-medium);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.form-group select,
+.form-group input {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text-dark);
+  background-color: var(--color-white);
+  font-family: var(--font-family);
+  transition: all var(--transition-base);
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.form-group select:disabled,
+.form-group input:disabled {
+  background-color: #F5F5F5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.input-with-currency {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: var(--spacing-md);
+  color: var(--color-text-light);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.input-with-currency input {
+  padding-left: calc(var(--spacing-md) * 2 + 12px);
+}
+
+/* ========================
+   TARJETAS DE PRESUPUESTO
+   ======================== */
+
+.budgets-list {
+  margin-top: var(--spacing-xl);
+}
+
+.budgets-list h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-dark);
+}
+
+.budgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.budget-card {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.budget-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Estados de color según gasto */
+.budget-card.danger {
+  border-color: #FFCDD2;
+  background: linear-gradient(135deg, #FFEBEE 0%, var(--color-white) 100%);
+}
+
+.budget-card.warning {
+  border-color: #FFE0B2;
+  background: linear-gradient(135deg, #FFF3E0 0%, var(--color-white) 100%);
+}
+
+.budget-card.success {
+  border-color: #C8E6C9;
+  background: linear-gradient(135deg, #E8F5E9 0%, var(--color-white) 100%);
+}
+
+.budget-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.budget-header-card h4 {
+  margin: 0;
+  color: var(--color-text-dark);
+}
+
+.spending-percentage {
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-full);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.budget-card.danger .spending-percentage {
+  color: var(--color-error);
+}
+
+.budget-card.warning .spending-percentage {
+  color: var(--color-warning);
+}
+
+.budget-card.success .spending-percentage {
+  color: var(--color-success);
+}
+
+/* ========================
+   BARRA DE PROGRESO
+   ======================== */
+
+.progress-bar {
+  height: 8px;
+  background-color: #E0E0E0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+.progress-fill.success {
+  background: linear-gradient(90deg, var(--color-success) 0%, #4CAF50 100%);
+}
+
+.progress-fill.warning {
+  background: linear-gradient(90deg, var(--color-warning) 0%, #FB8C00 100%);
+}
+
+.progress-fill.danger {
+  background: linear-gradient(90deg, var(--color-error) 0%, #E53935 100%);
+}
+
+/* ========================
+   DETALLES DE PRESUPUESTO
+   ======================== */
+
+.budget-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-row.highlight {
+  border-bottom: none;
+  padding-top: var(--spacing-md);
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  margin-top: var(--spacing-md);
+  font-weight: 600;
+}
+
+.detail-label {
+  color: var(--color-text-medium);
+  font-size: var(--font-size-sm);
+}
+
+.detail-value {
+  color: var(--color-text-dark);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+}
+
+.detail-value.spent {
+  color: var(--color-error);
+}
+
+.detail-value.spent.success {
+  color: var(--color-success);
+}
+
+.detail-value.remaining {
+  font-size: var(--font-size-lg);
+}
+
+.detail-value.remaining.danger {
+  color: var(--color-error);
+}
+
+.detail-value.remaining.warning {
+  color: var(--color-warning);
+}
+
+.detail-value.remaining.success {
+  color: var(--color-success);
+}
+
+/* ========================
+   ALERTAS DE SUPERAR PRESUPUESTO (HU-13)
+   ======================== */
+
+.budget-alert {
+  background-color: #FFCDD2;
+  color: #D32F2F;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border-left: 4px solid var(--color-error);
+}
+
+.budget-warning {
+  background-color: #FFE0B2;
+  color: #E65100;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border-left: 4px solid var(--color-warning);
+}
+
+/* ========================
+   ESTADO VACÍO
+   ======================== */
+
+.empty-budgets {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  color: var(--color-text-light);
+}
+
+.empty-budgets p:first-child {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ========================
+   RESUMEN DE PRESUPUESTOS
+   ======================== */
+
+.budget-summary {
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.budget-summary h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-dark);
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.stat-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+}
+
+.stat-value {
+  display: block;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.stat-value.spent {
+  color: var(--color-error);
+}
+
+.stat-value.remaining {
+  color: var(--color-success);
+}
+
+.loading-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-light);
+}
+
+/* ========================
+   RESPONSIVE
+   ======================== */
+
+@media (max-width: 1024px) {
+  .budgets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-stats {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .budgets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-form-container {
+    padding: var(--spacing-md);
+  }
+
+  .budget-card {
+    padding: var(--spacing-md);
+  }
+
+  .budget-summary {
+    padding: var(--spacing-md);
+  }
+
+  .budget-container {
+    padding: var(--spacing-md);
+  }
+}

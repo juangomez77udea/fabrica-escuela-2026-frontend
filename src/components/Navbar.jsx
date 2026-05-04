@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useAdmin } from '../contexts/AdminContext'
 import './Navbar.css'
 
 const Navbar = () => {
   const { user, logout } = useAuth()
+  const { isAdmin } = useAdmin()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -24,6 +26,15 @@ const Navbar = () => {
               <div className="nav-user">
                 <span className="user-name">Hola, {user.nombre}</span>
               </div>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="btn btn-primary btn-sm"
+                  aria-label="Panel de administración"
+                >
+                  👨‍💼 Admin
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="btn btn-secondary btn-sm"

@@ -24,6 +24,42 @@
   font-size: var(--font-size-base);
 }
 
+/* ========================
+   TABS DE NAVEGACIÓN
+   ======================== */
+
+.dashboard-tabs {
+  max-width: 1400px;
+  margin: 0 auto var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--color-text-dark);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
 .dashboard-content {
   max-width: 1400px;
   margin: 0 auto;
@@ -42,13 +78,23 @@
   min-height: 600px;
 }
 
+.dashboard-main.full-width {
+  grid-column: 1 / -1;
+}
+
 /* ========================
    RESPONSIVE
    ======================== */
 
 @media (max-width: 1024px) {
+  .dashboard-tabs {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .dashboard-content {
     grid-template-columns: 1fr;
+    max-width: 100%;
   }
 
   .dashboard-sidebar {

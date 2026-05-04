@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { transactionService, categoryService } from '../services/api'
+import { transactionService, categoryService, budgetService } from '../services/api'
 import './TransactionForm.css'
 
 const TransactionForm = ({ onTransactionAdded }) => {
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [categories, setCategories] = useState([])
+  const [budgets, setBudgets] = useState([])
   const [errors, setErrors] = useState({})
   const [successMessage, setSuccessMessage] = useState('')
+  const [budgetAlert, setBudgetAlert] = useState(null)
   const [formData, setFormData] = useState({
-    type: 'EXPENSE',
+    type: 'GASTO',
     amount: '',
     transactionDate: new Date().toISOString().split('T')[0],
     categoryId: '',
@@ -25,10 +27,32 @@ const TransactionForm = ({ onTransactionAdded }) => {
         setCategories(data || [])
       } catch (error) {
         console.error('Error cargando categorías:', error)
+        setCategories([])
       }
     }
-    loadCategories()
-  }, [])
+    if (user?.id) {
+      loadCategories()
+    }
+  }, [user?.id])
+
+  // Cargar presupuestos del mes actual
+  useEffect(() => {
+    const loadBudgets = async () => {
+      try {
+        const today = new Date()
+        const month = today.getMonth() + 1
+        const year = today.getFullYear()
+        const data = await budgetService.getBudgetsForMonth(month, year)
+        setBudgets(data || [])
+      } catch (error) {
+        console.error('Error cargando presupuestos:', error)
+        setBudgets([])
+      }
+    }
+    if (user?.id) {
+      loadBudgets()
+    }
+  }, [user?.id])
 
   const validateForm = () => {
     const newErrors = {}
@@ -59,6 +83,40 @@ const TransactionForm = ({ onTransactionAdded }) => {
     return Object.keys(newErrors).length === 0
   }
 
+  const checkBudgetAlert = () => {
+    setBudgetAlert(null)
+    
+    // Solo validar presupuesto para gastos
+    if (formData.type !== 'GASTO' || !formData.categoryId || !formData.amount) {
+      return true
+    }
+
+    const categoryId = parseInt(formData.categoryId)
+    const amount = parseFloat(formData.amount)
+    const budget = budgets.find(b => b.category.id === categoryId)
+
+    if (budget) {
+      const newTotalSpending = budget.spent + amount
+      if (newTotalSpending > budget.amount) {
+        const exceededAmount = newTotalSpending - budget.amount
+        setBudgetAlert({
+          type: 'error',
+          message: `⚠️ Alerta: Esta transacción supera el presupuesto de ${budget.category.name} por $${exceededAmount.toFixed(2)}`
+        })
+        return true // Permitir continuar pero con alerta
+      } else if (newTotalSpending >= budget.amount * 0.8) {
+        const percentage = Math.round((newTotalSpending / budget.amount) * 100)
+        setBudgetAlert({
+          type: 'warning',
+          message: `⚠️ Advertencia: Ya habrás gastado el ${percentage}% del presupuesto de ${budget.category.name}`
+        })
+        return true // Permitir continuar pero con advertencia
+      }
+    }
+
+    return true // Sin problemas de presupuesto
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -80,6 +138,9 @@ const TransactionForm = ({ onTransactionAdded }) => {
       return
     }
 
+    // Verificar alerta de presupuesto
+    checkBudgetAlert()
+
     setIsLoading(true)
     setSuccessMessage('')
 
@@ -99,16 +160,24 @@ const TransactionForm = ({ onTransactionAdded }) => {
 
       setSuccessMessage('¡Transacción registrada exitosamente!')
       setFormData({
-        type: 'EXPENSE',
+        type: 'GASTO',
         amount: '',
         transactionDate: new Date().toISOString().split('T')[0],
         categoryId: '',
         description: ''
       })
+      setBudgetAlert(null)
 
       if (onTransactionAdded) {
         onTransactionAdded(response)
       }
+
+      // Recargar presupuestos después de guardar exitosamente
+      const today = new Date()
+      const month = today.getMonth() + 1
+      const year = today.getFullYear()
+      const updatedBudgets = await budgetService.getBudgetsForMonth(month, year)
+      setBudgets(updatedBudgets || [])
 
       setTimeout(() => setSuccessMessage(''), 3000)
     } catch (error) {
@@ -138,6 +207,12 @@ const TransactionForm = ({ onTransactionAdded }) => {
         </div>
       )}
 
+      {budgetAlert && (
+        <div className={`alert alert-${budgetAlert.type}`} role="alert">
+          {budgetAlert.message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="transaction-form" noValidate>
         <div className="form-row">
           <div className="form-group">
@@ -150,8 +225,8 @@ const TransactionForm = ({ onTransactionAdded }) => {
               disabled={isLoading}
               aria-invalid={!!errors.type}
             >
-              <option value="EXPENSE">Gasto</option>
-              <option value="INCOME">Ingreso</option>
+              <option value="GASTO">Gasto</option>
+              <option value="INGRESO">Ingreso</option>
             </select>
           </div>
 

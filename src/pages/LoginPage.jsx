@@ -63,8 +63,11 @@ const LoginPage = () => {
         formData.password
       )
 
-      // Guardar usuario en contexto
-      login(response.user)
+      // Guardar usuario y token en contexto
+      login({
+        ...response.user,
+        token: response.token
+      })
 
       // Redirigir al dashboard
       navigate('/dashboard')
